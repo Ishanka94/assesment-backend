@@ -15,6 +15,31 @@ const getAllReviews= async (req, res) => {
     return sendResponse(res, httpStatus.OK , {allReviews, total});
 }
 
+const createReview = async (req, res) => {
+    const review = Review(req.body);
+    const savedData = await review.save();
+    if (savedData) {
+        return sendResponse(res, httpStatus.OK , savedData);
+    }
+};
+
+const updateReview = async (req, res) => {
+    const updatedReview = await Review.findOneAndUpdate({_id: req?.body?._id}, req.body, {new: true});
+    if (updatedReview) {
+        return sendResponse(res, httpStatus.OK , updatedReview);
+    }
+};
+
+const deleteReview = async (req, res) => {
+    const deletedReview = await Review.findByIdAndDelete({_id: req?.body?._id});
+    if (deletedReview) {
+        return sendResponse(res, httpStatus.OK , deletedReview);
+    }
+};
+
 module.exports = {
     getAllReviews,
+    updateReview,
+    createReview,
+    deleteReview
 }
